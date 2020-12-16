@@ -1,17 +1,21 @@
 const path = require("path");
+const webpack = require("webpack");
+
 
 module.exports = {
 	entry: "./src/index.js",
+	mode: 'development',
 	output: {
-		filename: "main.js",
+		filename: 'main.js',
 		path: path.resolve(__dirname, "dist")
 	},
-	target: "node",
-	devtool: "inline-source-map",
 	devServer: {
 		contentBase: "./dist",
-		compress: true
+		hot: true,
 	},
+	plugins: [
+		new webpack.HotModuleReplacementPlugin(),
+	],
 	module: {
 		rules: [
 			{
@@ -31,14 +35,15 @@ module.exports = {
 			}
 		]
 	},
+
 	resolve: {
 		fallback: {
 			path: require.resolve("path-browserify"),
 			fs: require.resolve("fs-extra"),
 			constants: require.resolve("constants-browserify"),
 			stream: require.resolve("stream-browserify"),
-			buffer: require.resolve("buffer/"),
-			assert: require.resolve("assert/")
+			buffer: require.resolve("buffer"),
+			assert: require.resolve("assert")
 		}
 	}
 };

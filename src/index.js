@@ -1,7 +1,9 @@
-import Ammo from "ammo.js";
 import * as THREE from "three";
-import Detector from "./Detector";
 import Stats from "stats.js";
+import Ammo from "ammo.js";
+
+import Detector from "./Detector";
+
 
 Ammo().then(function (Ammo) {
 	// Detects webgl
@@ -14,7 +16,6 @@ Ammo().then(function (Ammo) {
 	var DISABLE_DEACTIVATION = 4;
 	var TRANSFORM_AUX = new Ammo.btTransform();
 	var ZERO_QUATERNION = new THREE.Quaternion(0, 0, 0, 1);
-
 	// Graphics variables
 	var container, stats, speedometer;
 	var camera, controls, scene, renderer;
@@ -230,7 +231,6 @@ Ammo().then(function (Ammo) {
 		var body = new Ammo.btRigidBody(rbInfo);
 
 		body.setFriction(friction);
-
 		//body.setRestitution(.9);
 		//body.setDamping(0.2, 0.2);
 
