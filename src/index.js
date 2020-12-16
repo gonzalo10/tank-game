@@ -4,7 +4,6 @@ import Ammo from "ammo.js";
 
 import Detector from "./Detector";
 
-
 Ammo().then(function (Ammo) {
 	// Detects webgl
 	if (!Detector.webgl) {
@@ -18,7 +17,7 @@ Ammo().then(function (Ammo) {
 	var ZERO_QUATERNION = new THREE.Quaternion(0, 0, 0, 1);
 	// Graphics variables
 	var container, stats, speedometer;
-	var camera, controls, scene, renderer;
+	var camera, scene, renderer;
 	var terrainMesh, texture;
 	var clock = new THREE.Clock();
 	var materialDynamic, materialStatic, materialInteractive;
@@ -77,11 +76,9 @@ Ammo().then(function (Ammo) {
 			0.2,
 			2000
 		);
-		camera.position.x = -35;
+		camera.position.x = 0;
 		camera.position.y = 10;
-		camera.position.z = -10;
-		// camera.lookAt(new THREE.Vector3(0.33, -0.4, 0.85));
-		// controls = new THREE.OrbitControls(camera);
+		camera.position.z = -20;
 
 		renderer = new THREE.WebGLRenderer({ antialias: true });
 		renderer.setClearColor(0xbfd1e5);
@@ -324,7 +321,8 @@ Ammo().then(function (Ammo) {
 		const mesh = new THREE.Object3D();
 		// mesh.translate(0, 0, 0);
 		mesh.scale.set(5, 5, 5);
-		mesh.position.y = 0.5;
+		mesh.position.y = 2;
+		mesh.position.x = 0.25;
 		return mesh;
 	}
 
@@ -466,20 +464,8 @@ Ammo().then(function (Ammo) {
 		//keep real time tank position
 		carPosition = chassisMesh;
 
-		// Camera floating following the tank
-		camera.position.x = 4;
-		camera.position.z = -12;
-		camera.lookAt(
-			carPosition.position.x + 3,
-			carPosition.position.y,
-			carPosition.position.z + 10
-		);
+		camera.lookAt(0, 0, 0);
 		chassisMesh.add(camera);
-		// camera.position.set(
-		// 	chassisMesh.position.x + 2,
-		// 	chassisMesh.position.y + 2,
-		// 	chassisMesh.position.z - 2
-		// );
 
 		var domeMesh = createDomeMesh(
 			domeRadius,
@@ -674,7 +660,6 @@ Ammo().then(function (Ammo) {
 			p = tm.getOrigin();
 			q = tm.getRotation();
 			chassisMesh.position.set(p.x(), p.y(), p.z());
-			// camera.lookAt(chassisMesh.position);
 			chassisMesh.quaternion.set(q.x(), q.y(), q.z(), q.w());
 		}
 
@@ -708,10 +693,12 @@ Ammo().then(function (Ammo) {
 	function onMouseMove(event) {
 		mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
 		mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-		// console.log(event.clientX / window.innerWidth);
-		// console.log(mouse.x);
 		raycasterMouse.setFromCamera(mouse, camera);
 		raycasterMouse.ray.intersectPlane(plane, pointOfIntersection);
+		// console.log("pointOfIntersection", pointOfIntersection);
+		// TorretPoint.lookAt(
+		// 	new THREE.Vector3(pointOfIntersection.x, 0, pointOfIntersection.z)
+		// );
 		TorretPoint.lookAt(pointOfIntersection);
 	}
 
@@ -773,18 +760,22 @@ Ammo().then(function (Ammo) {
 		return body;
 	}
 
-	function processClick() {
+	function shootBall() {
 		if (clickRequest) {
+			// Initial position of the ball
 			const shootingOrigin = {
 				...carPosition.position,
 				y: carPosition.position.y + 1
 			};
-
-			raycaster.set(shootingOrigin, new THREE.Vector3(0, 0, 0.4));
+			const { _x, _y, _z } = TorretPoint.rotation;
+			console.log("_y", _y);
+			console.log("car_y", carPosition.position.y);
+			// console.log(_z)
+			raycaster.set(shootingOrigin, new THREE.Vector3(_y, 0, 0.7));
 
 			// Creates a ball
 			var ballMass = 7;
-			var ballRadius = 0.4;
+			var ballRadius = 0.35;
 
 			var ball = new THREE.Mesh(
 				new THREE.SphereGeometry(ballRadius, 18, 16),
@@ -828,8 +819,7 @@ Ammo().then(function (Ammo) {
 	function render() {
 		var deltaTime = clock.getDelta();
 		updatePhysics(deltaTime);
-		processClick();
-		// camera.updateProjectionMatrix();
+		shootBall();
 		renderer.render(scene, camera);
 	}
 	function animate() {
