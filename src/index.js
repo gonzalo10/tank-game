@@ -765,7 +765,7 @@ Ammo().then(function (Ammo) {
 				...carPosition.position,
 				y: carPosition.position.y + 2,
 				z: carPosition.position.z + 5,
-				x: carPosition.position.x + 5
+				x: carPosition.position.x + 5 * _x
 			};
 
 			raycaster.set(shootingOrigin, new THREE.Vector3(_y, 0, 0.7));

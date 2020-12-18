@@ -8,10 +8,10 @@ module.exports = {
 		filename: "main.js",
 		path: path.resolve(__dirname, "dist")
 	},
-	target: "node",
+	target: "web",
 	devServer: {
-		contentBase: "./dist"
-		// hot: true
+		contentBase: "./dist",
+		hot: true
 	},
 	externals: [
 		{
