@@ -1,21 +1,27 @@
 const path = require("path");
 const webpack = require("webpack");
 
-
 module.exports = {
 	entry: "./src/index.js",
-	mode: 'development',
+	mode: "development",
 	output: {
-		filename: 'main.js',
+		filename: "main.js",
 		path: path.resolve(__dirname, "dist")
 	},
+	target: "node",
 	devServer: {
-		contentBase: "./dist",
-		hot: true,
+		contentBase: "./dist"
+		// hot: true
 	},
-	plugins: [
-		new webpack.HotModuleReplacementPlugin(),
+	externals: [
+		{
+			webpack: {
+				commonjs: "webpack",
+				module: "webpack"
+			}
+		}
 	],
+	plugins: [new webpack.HotModuleReplacementPlugin()],
 	module: {
 		rules: [
 			{
@@ -28,14 +34,13 @@ module.exports = {
 				use: {
 					loader: "babel-loader",
 					options: {
-						presets: ["@babel/preset-env", "@babel/preset-react"],
+						presets: ["@babel/preset-env"],
 						cacheDirectory: true
 					}
 				}
 			}
 		]
 	},
-
 	resolve: {
 		fallback: {
 			path: require.resolve("path-browserify"),
@@ -43,7 +48,12 @@ module.exports = {
 			constants: require.resolve("constants-browserify"),
 			stream: require.resolve("stream-browserify"),
 			buffer: require.resolve("buffer"),
-			assert: require.resolve("assert")
+			assert: require.resolve("assert"),
+			crypto: false,
+			https: false,
+			http: false,
+			vm: false,
+			os: false
 		}
 	}
 };

@@ -3,6 +3,7 @@ import Stats from "stats.js";
 import Ammo from "ammo.js";
 
 import Detector from "./Detector";
+import { SingleEntryPlugin } from "webpack";
 
 Ammo().then(function (Ammo) {
 	// Detects webgl
@@ -319,10 +320,9 @@ Ammo().then(function (Ammo) {
 	}
 	function createCannonPivot() {
 		const mesh = new THREE.Object3D();
-		// mesh.translate(0, 0, 0);
 		mesh.scale.set(5, 5, 5);
 		mesh.position.y = 2;
-		mesh.position.x = 0.25;
+		mesh.position.x = 0;
 		return mesh;
 	}
 
@@ -687,7 +687,7 @@ Ammo().then(function (Ammo) {
 					10
 				);
 
-		createVehicle(new THREE.Vector3(-15, 4, -1), ZERO_QUATERNION);
+		createVehicle(new THREE.Vector3(0, 0, -10), ZERO_QUATERNION);
 	}
 
 	function onMouseMove(event) {
@@ -695,11 +695,10 @@ Ammo().then(function (Ammo) {
 		mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 		raycasterMouse.setFromCamera(mouse, camera);
 		raycasterMouse.ray.intersectPlane(plane, pointOfIntersection);
-		// console.log("pointOfIntersection", pointOfIntersection);
-		// TorretPoint.lookAt(
-		// 	new THREE.Vector3(pointOfIntersection.x, 0, pointOfIntersection.z)
-		// );
-		TorretPoint.lookAt(pointOfIntersection);
+
+		TorretPoint.lookAt(
+			new THREE.Vector3(pointOfIntersection.x, 0, pointOfIntersection.z)
+		);
 	}
 
 	function initInput() {
@@ -711,9 +710,6 @@ Ammo().then(function (Ammo) {
 						(event.clientX / window.innerWidth) * 2 - 1,
 						-(event.clientY / window.innerHeight) * 2 + 1
 					);
-
-					// console.log(mouseCoords);
-
 					clickRequest = true;
 				}
 			},
@@ -763,14 +759,15 @@ Ammo().then(function (Ammo) {
 	function shootBall() {
 		if (clickRequest) {
 			// Initial position of the ball
+			const { _x, _y, _z } = TorretPoint.rotation;
+			console.log(_x);
 			const shootingOrigin = {
 				...carPosition.position,
-				y: carPosition.position.y + 1
+				y: carPosition.position.y + 2,
+				z: carPosition.position.z + 5,
+				x: carPosition.position.x + 5
 			};
-			const { _x, _y, _z } = TorretPoint.rotation;
-			console.log("_y", _y);
-			console.log("car_y", carPosition.position.y);
-			// console.log(_z)
+
 			raycaster.set(shootingOrigin, new THREE.Vector3(_y, 0, 0.7));
 
 			// Creates a ball
