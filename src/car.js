@@ -88,11 +88,6 @@ export default Ammo().then(function (Ammo) {
 
 		container.appendChild(renderer.domElement);
 
-		stats = new Stats();
-		stats.domElement.style.position = "absolute";
-		stats.domElement.style.top = "0px";
-		container.appendChild(stats.domElement);
-
 		window.addEventListener("resize", onWindowResize, false);
 		window.addEventListener("keydown", keydown);
 		window.addEventListener("keyup", keyup);
@@ -384,7 +379,7 @@ export default Ammo().then(function (Ammo) {
 		);
 
 		// Sync keybord actions and physics and graphics
-		function sync(dt) {
+		function sync() {
 			var speed = vehicle.getCurrentSpeedKmHour();
 
 			speedometer.innerHTML =
