@@ -1,5 +1,6 @@
-// import AmmoTank from "./ammo-tank";
-// import Car from "./car";
-import Tank from "./tank";
+// import Game from "./ammo-tank";
+// import Game from "./car";
+import Game from "./car-clean";
+// import Game from "./tank";
 
-export default Tank;
+export default Game;

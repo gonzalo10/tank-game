@@ -636,7 +636,6 @@ export default Ammo().then(function (Ammo) {
 		// Sync keybord actions and physics and graphics
 		function sync(dt) {
 			var speed = vehicle.getCurrentSpeedKmHour();
-
 			speedometer.innerHTML =
 				(speed < 0 ? "(R) " : "") + Math.abs(speed).toFixed(1) + " km/h";
 
@@ -701,7 +700,6 @@ export default Ammo().then(function (Ammo) {
 			chassisMesh.position.set(p.x(), p.y(), p.z());
 			chassisMesh.quaternion.set(q.x(), q.y(), q.z(), q.w());
 		}
-
 		syncList.push(sync);
 	}
 
